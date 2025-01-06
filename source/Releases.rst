@@ -23,20 +23,12 @@ Rows in the table marked in green are the currently supported distributions.
 .. toctree::
    :hidden:
 
-   Releases/Alpha-Overview.rst
-   Releases/Beta1-Overview.rst
-   Releases/Beta2-Overview.rst
-   Releases/Beta3-Overview.rst
-   Releases/Release-Ardent-Apalone.rst
-   Releases/Release-Bouncy-Bolson.rst
-   Releases/Release-Crystal-Clemmys.rst
-   Releases/Release-Dashing-Diademata.rst
-   Releases/Release-Eloquent-Elusor.rst
-   Releases/Release-Foxy-Fitzroy.rst
-   Releases/Release-Galactic-Geochelone.rst
-   Releases/Galactic-Geochelone-Complete-Changelog.rst
-   Releases/Release-Humble-Hawksbill.rst
-   Releases/Release-Rolling-Ridley.rst
+   Releases/Release-Jazzy-Jalisco
+   Releases/Release-Humble-Hawksbill
+   Releases/Release-Rolling-Ridley
+   Releases/Development
+   Releases/End-of-Life
+   Releases/Release-Process
 
 .. raw:: html
 
@@ -54,12 +46,22 @@ Rows in the table marked in green are the currently supported distributions.
      why it is like this.
    -->
    <style>
-     .rst-content tr:nth-child(2) {background-color: #33cc66;}
+     .rst-content table.docutils:not(.field-list) tr:nth-child(1) td {background-color: #33cc66;}
      .rst-content table.docutils:not(.field-list) tr:nth-child(3) td {background-color: #33cc66;}
+     .rst-content tr:nth-child(3) {background-color: #33cc66;}
    </style>
 
 .. |rolling| image:: Releases/rolling-small.png
    :alt: Rolling logo
+
+.. |jazzy| image:: Releases/jazzy-small.png
+   :alt: Jazzy logo
+
+.. |iron| image:: Releases/iron-small.png
+   :alt: Iron logo
+
+.. |humble| image:: Releases/humble-small.png
+   :alt: Humble logo
 
 .. |galactic| image:: Releases/galactic-small.png
    :alt: Galactic logo
@@ -85,98 +87,121 @@ Rows in the table marked in green are the currently supported distributions.
 .. list-table::
    :class: distros
    :header-rows: 1
-   :widths: 35 30 20 15
+   :widths: 35 25 30 20 10
 
    * - Distro
      - Release date
      - Logo
      - EOL date
+     - ROS Boss
+   * - :doc:`Jazzy Jalisco <Releases/Release-Jazzy-Jalisco>`
+     - May 23, 2024
+     - |jazzy|
+     - May 2029
+     - `Marco A. Gutiérrez <https://github.com/marcoag>`_
+   * - :doc:`Iron Irwini <Releases/Release-Iron-Irwini>`
+     - May 23, 2023
+     - |iron|
+     - December 4, 2024
+     - `Yadunund Vijay <https://github.com/Yadunund>`_
    * - :doc:`Humble Hawksbill <Releases/Release-Humble-Hawksbill>`
-     - May 23rd, 2022
-     -
-     -
+     - May 23, 2022
+     - |humble|
+     - May 2027
+     - `Audrow Nash <https://github.com/audrow>`_
    * - :doc:`Galactic Geochelone <Releases/Release-Galactic-Geochelone>`
-     - May 23rd, 2021
+     - May 23, 2021
      - |galactic|
-     - November 2022
+     - December 9, 2022
+     - `Scott Logan <https://github.com/cottsay/>`_
    * - :doc:`Foxy Fitzroy <Releases/Release-Foxy-Fitzroy>`
-     - June 5th, 2020
+     - June 5, 2020
      - |foxy|
-     - May 2023
+     - June 20, 2023
+     - `Jacob Perron <https://github.com/jacobperron>`_ / `Dharini Dutia <https://github.com/quarkytale>`_
    * - :doc:`Eloquent Elusor <Releases/Release-Eloquent-Elusor>`
-     - November 22nd, 2019
+     - November 22, 2019
      - |eloquent|
      - November 2020
+     - `Michael Carroll <https://github.com/mjcarroll>`_
    * - :doc:`Dashing Diademata <Releases/Release-Dashing-Diademata>`
-     - May 31st, 2019
+     - May 31, 2019
      - |dashing|
      - May 2021
+     - `Steven! Ragnarök <https://github.com/nuclearsandwich>`_
    * - :doc:`Crystal Clemmys <Releases/Release-Crystal-Clemmys>`
-     - December 14th, 2018
+     - December 14, 2018
      - |crystal|
      - December 2019
+     - `Steven! Ragnarök <https://github.com/nuclearsandwich>`_
    * - :doc:`Bouncy Bolson <Releases/Release-Bouncy-Bolson>`
-     - July 2nd, 2018
+     - July 2, 2018
      - |bouncy|
      - July 2019
+     - `Mikael Arguedas <https://github.com/mikaelarguedas>`_ / `Steven! Ragnarök <https://github.com/nuclearsandwich>`_
    * - :doc:`Ardent Apalone <Releases/Release-Ardent-Apalone>`
-     - December 8th, 2017
+     - December 8, 2017
      - |ardent|
      - December 2018
+     - `Steven! Ragnarök <https://github.com/nuclearsandwich>`_
    * - :doc:`beta3 <Releases/Beta3-Overview>`
-     - September 13th, 2017
+     - September 13, 2017
      -
      - December 2017
+     -
    * - :doc:`beta2 <Releases/Beta2-Overview>`
-     - July 5th, 2017
+     - July 5, 2017
      -
      - September 2017
+     -
    * - :doc:`beta1 <Releases/Beta1-Overview>`
-     - December 19th, 2016
+     - December 19, 2016
      -
      - Jul 2017
+     -
    * - :doc:`alpha1 - alpha8 <Releases/Alpha-Overview>`
-     - August 31th, 2015
+     - August 31, 2015
      -
      - December 2016
+     -
 
 Future Distributions
 --------------------
 
-For details on upcoming features see the :doc:`roadmap <Roadmap>`.
+For details on upcoming features see the :doc:`roadmap <The-ROS2-Project/Roadmap>`.
 
 There is a new ROS 2 distribution released yearly on May 23rd (`World Turtle Day <https://www.worldturtleday.org/>`_).
 
 .. list-table::
    :class: future-distros
    :header-rows: 1
-   :widths: 25 30 20 25
+   :widths: 35 30 20 15
 
    * - Distro
      - Release date
-     - Supported for
-     - Planned changes
-   * - :doc:`Humble Hawksbill<Releases/Release-Humble-Hawksbill>`
-     - May 2022
+     - Logo
+     - EOL date
+   * - :doc:`Kilted Kaiju <Releases/Release-Kilted-Kaiju>`
+     - May 2025
      - TBD
-     - TBD
+     - Nov 2026
 
-
-The expectation is to release new ROS 2 distributions once per year.
 
 .. _rolling_distribution:
 
 Rolling Distribution
 --------------------
 
-The Rolling distribution of ROS 2 serves as a staging area for future stable distributions of ROS 2 and as a collection of the most recent development releases.
-Unlike most stable ROS 2 distributions which have an initial release, a support window during which they are updated, and a definite end of support (see :ref:`list_of_distributions` above) the Rolling distribution is continuously updated and is subject to in-place updates which will at times include breaking changes.
+:doc:`ROS 2 Rolling Ridley <Releases/Release-Rolling-Ridley>` is the rolling development distribution of ROS 2.
+It is described in `REP 2002 <https://www.ros.org/reps/rep-2002.html>`_ and was first introduced in June 2020.
+
+The Rolling distribution of ROS 2 serves two purposes:
+
+1. it is a staging area for future stable distributions of ROS 2, and
+2. it is a collection of the most recent development releases.
+
+As the name implies, Rolling is continuously updated and **can have in-place updates that include breaking changes**.
+We recommend that most people use the most recent stable distribution instead (see :ref:`list_of_distributions`).
 
 Packages released into the Rolling distribution will be automatically released into future stable distributions of ROS 2.
-:doc:`Releasing a ROS 2 package <How-To-Guides/Releasing-a-ROS-2-package-with-bloom>` into the Rolling distribution follows the same procedures as all other ROS 2 distributions.
-
-:doc:`ROS 2 Rolling Ridley <Releases/Release-Rolling-Ridley>` is the rolling development distribution of ROS 2 as proposed in `REP 2002 <https://www.ros.org/reps/rep-2002.html>`_.
-It was first introduced in June 2020.
-
-The Rolling distribution will receive frequent and possibly compatibility-breaking releases in core packages and we recommend most people use the most recent stable distribution instead.
-Since new stable distributions will be created from snapshots of the Rolling distribution, package maintainers who want to make their packages available in future ROS 2 distributions can do so by releasing their packages into the Rolling distribution.
+:doc:`Releasing a ROS 2 package <../How-To-Guides/Releasing/Releasing-a-Package>` into the Rolling distribution follows the same procedures as all other ROS 2 distributions.

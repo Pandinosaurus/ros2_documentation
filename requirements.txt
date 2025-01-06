@@ -1,7 +1,10 @@
+doc8
+docutils
 pip
-docutils==0.16
 sphinx
-sphinx-tabs
+sphinx-copybutton
+sphinx-lint
 sphinx-multiversion
 sphinx-rtd-theme
-sphinx-copybutton
+sphinx-tabs
+sphinxcontrib-mermaid

@@ -1,5 +1,5 @@
-ROS 2 Foxy Fitzroy (codename 'foxy'; June 5th, 2020)
-====================================================
+Foxy Fitzroy (``foxy``)
+=======================
 
 .. contents:: Table of Contents
    :depth: 2
@@ -36,8 +36,116 @@ New features in this ROS 2 release
 
 During the development the `Foxy meta-ticket <https://github.com/ros2/ros2/issues/830>`__ on GitHub contains an up-to-date state of the ongoing high-level tasks as well as references specific tickets with more details.
 
-Changes in Patch Release 2
---------------------------
+Changes in Patch Release 8 (2022-09-28)
+---------------------------------------
+
+Launch GroupAction scopes environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``SetEnvironmentVariable`` action is now scoped to any ``GroupAction`` it is returned from.
+
+For example, consider the following launch files,
+
+.. tabs::
+
+   .. group-tab:: Python
+
+      .. code-block:: python
+
+         import launch
+         from launch.actions import SetEnvironmentVariable
+         from launch.actions import GroupAction
+         from launch_ros.actions import Node
+
+
+         def generate_launch_description():
+             return launch.LaunchDescription([
+                 SetEnvironmentVariable(name='my_env_var', value='1'),
+                 Node(package='foo', executable='foo', output='screen'),
+                 GroupAction([
+                     SetEnvironmentVariable(name='my_env_var', value='2'),
+                 ]),
+             ])
+
+   .. group-tab:: XML
+
+      .. code-block:: xml
+
+         <launch>
+           <set_env name="my_env_var" value="1"/>
+           <node pkg="foo" exec="foo" output="screen" />
+           <group>
+             <set_env name="my_env_var" value="2"/>
+           </group>
+         </launch>
+
+Before patch release 8, the node ``foo`` will start with ``my_env_var=2``, but now it will start with ``my_env_var=1``.
+
+To opt-out of the new behavior, you can set the argument ``scoped=False`` on the ``GroupAction``.
+
+Related tickets:
+
+
+* `ros2#1244 <https://github.com/ros2/ros2/issues/1244>`_
+* `launch#630 <https://github.com/ros2/launch/pull/630>`_
+
+Changes in Patch Release 7 (2022-02-08)
+---------------------------------------
+
+Launch set_env frontend behavior change
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`launch#468 <https://github.com/ros2/launch/pull/468>`_ inadvertently changed behavior to the scope of the ``set_env`` action in frontend launch files.
+Changes to environment variables using the ``set_env`` action are no longer scoped to parent ``group`` actions, and instead apply globally.
+Since it was backported, the change affects this release.
+
+We consider this change a regression and intend to fix the behavior in the next patch release and in future ROS distributions.
+We also plan to fix the behavior in Python launch files, which have never scoped setting environment variables properly.
+
+Related issues:
+
+* `ros2#1244 <https://github.com/ros2/ros2/issues/1244>`_
+* `launch#597 <https://github.com/ros2/launch/issues/597>`_
+
+Fix launch frontend parser
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A refactor of the launch frontend parser fixed some `issues parsing special characters <https://github.com/ros2/launch_ros/issues/214>`_.
+As a result, there has been a small behavior change when it comes to parsing strings.
+For example, previously to pass a number as a string you would have to add extra quotation marks (two sets of quotation marks were needed if using a substitution):
+
+.. code-block:: xml
+
+   <!-- results in the string value "'3'" -->
+   <param name="foo" value="''3''"/>
+
+After the refactor, the above will result in the the string ``"''3''"`` (note the extra set of quotation marks).
+Now, users should use the ``type`` attribute to signal that the value should be interpreted as a string:
+
+.. code-block:: xml
+
+   <param name="foo" value="3" type="str"/>
+
+Related pull requests:
+
+* `launch#530 <https://github.com/ros2/launch/pull/530>`_
+* `launch_ros#265 <https://github.com/ros2/launch_ros/pull/265>`_
+
+Fix memory leaks and undefined behavior in rmw_fastrtps_dynamic_cpp
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+API was changed in the following header files:
+
+- ``rmw_fastrtps_dynamic_cpp/TypeSupport.hpp``
+- ``rmw_fastrtps_dynamic_cpp/TypeSupport_impl.hpp``
+
+Though technically they are publically accessible, it is unlikely people are using them directly.
+Therefore, we decided to break API in order to fix memory leaks and undefined behavior.
+
+The fix was originally submitted in `rmw_fastrtps#429 <https://github.com/ros2/rmw_fastrtps/pull/429>`_ and later backported to Foxy in `rmw_fastrtps#577 <https://github.com/ros2/rmw_fastrtps/pull/577>`_.
+
+Changes in Patch Release 2 (2020-08-07)
+---------------------------------------
 
 Bug in static_transform_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -163,7 +271,7 @@ Change in Serialized Message Callback Signature
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The pull request `ros2/rclcpp#1081 <https://github.com/ros2/rclcpp/pull/1081>`_ introduces a new signature of the callbacks for retrieving ROS messages in serialized form.
-The previously used C-Struct `rcl_serialized_message_t <https://github.com/ros2/rmw/blob/master/rmw/include/rmw/serialized_message.h>`_ is being superseded by a C++ data type `rclcpp::SerializedMessage <https://github.com/ros2/rclcpp/blob/master/rclcpp/include/rclcpp/serialized_message.hpp>`_.
+The previously used C-Struct `rcl_serialized_message_t <https://github.com/ros2/rmw/blob/foxy/rmw/include/rmw/serialized_message.h>`_ is being superseded by a C++ data type `rclcpp::SerializedMessage <https://github.com/ros2/rclcpp/blob/foxy/rclcpp/include/rclcpp/serialized_message.hpp>`_.
 
 The example nodes in ``demo_nodes_cpp``, namely ``talker_serialized_message`` as well as ``listener_serialized_message`` reflect these changes.
 
@@ -335,6 +443,8 @@ Known Issues
 
 * `[ros2/ros2#922] <https://github.com/ros2/ros2/issues/922>`_ Services' performance is flaky for ``rclcpp`` nodes using eProsima Fast-RTPS or ADLINK CycloneDDS as RMW implementation.
   Specifically, service clients sometimes do not receive the response from servers.
+
+* `[ros2/rclcpp#1212] <https://github.com/ros2/rclcpp/issues/1212>`_ Ready reentrant Waitable objects can attempt to execute multiple times.
 
 
 Timeline before the release

@@ -1,12 +1,12 @@
-Installing prerequisites
-------------------------
+System setup
+------------
 
 Install Chocolatey
 ^^^^^^^^^^^^^^^^^^
 
 Chocolatey is a package manager for Windows, install it by following their installation instructions:
 
-https://chocolatey.org/
+https://chocolatey.org/install
 
 You'll use Chocolatey to install some other developer tools.
 
@@ -18,6 +18,11 @@ Open a Command Prompt and type the following to install Python via Chocolatey:
 .. code-block:: bash
 
    choco install -y python --version 3.8.3
+
+.. note::
+
+   Chocolatey will install Python in ``C:\Python38``, and the rest of the installation expects it to be there.
+   If you've installed Python somewhere else, you must copy or link it to that location.
 
 Install Visual C++ Redistributables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -31,17 +36,17 @@ Open a Command Prompt and type the following to install them via Chocolatey:
 Install OpenSSL
 ^^^^^^^^^^^^^^^
 
-Download the *Win64 OpenSSL v1.1.1L* OpenSSL installer from `this page <https://slproweb.com/products/Win32OpenSSL.html>`__.
-Scroll to the bottom of the page and download *Win64 OpenSSL v1.1.1L*.
-Don't download the Win32 or Light versions.
+Open a Command Prompt and type the following to install OpenSSL via Chocolatey:
 
-Run the installer with default parameters, as the following commands assume you used the default installation directory.
+.. code-block:: bash
+
+  choco install -y openssl --version 1.1.1.2100
 
 This command sets an environment variable that persists over sessions:
 
 .. code-block:: bash
 
-   setx -m OPENSSL_CONF "C:\Program Files\OpenSSL-Win64\bin\openssl.cfg"
+   setx /m OPENSSL_CONF "C:\Program Files\OpenSSL-Win64\bin\openssl.cfg"
 
 You will need to append the OpenSSL-Win64 bin folder to your PATH.
 You can do this by clicking the Windows icon, typing "Environment Variables", then clicking on "Edit the system environment variables".
@@ -57,20 +62,15 @@ Install Visual Studio 2019.
 If you already have a paid version of Visual Studio 2019 (Professional, Enterprise), skip this step.
 
 Microsoft provides a free of charge version of Visual Studio 2019, named Community, which can be used to build applications that use ROS 2.
-`You can download the installer directly through this link. <https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16&src=myvs&utm_medium=microsoft&utm_source=my.visualstudio.com&utm_campaign=download&utm_content=vs+community+2019>`_
+`You can download the installer directly through this link. <https://aka.ms/vs/16/release/vs_community.exe>`_
 
 Make sure that the Visual C++ features are installed.
 
 An easy way to make sure they're installed is to select the ``Desktop development with C++`` workflow during the install.
 
-   .. image:: https://i.imgur.com/2h0IxCk.png
+   .. image:: /Installation/images/windows-vs-studio-install.png
 
 Make sure that no C++ CMake tools are installed by unselecting them in the list of components to be installed.
-
-Install additional DDS implementations (optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If you would like to use another DDS or RTPS vendor besides the default, Eclipse Cyclone DDS, you can find instructions :doc:`here <DDS-Implementations>`.
 
 Install OpenCV
 ^^^^^^^^^^^^^^
@@ -83,7 +83,7 @@ Assuming you unpacked it to ``C:\opencv``, type the following on a Command Promp
 
 .. code-block:: bash
 
-   setx -m OpenCV_DIR C:\opencv
+   setx /m OpenCV_DIR C:\opencv
 
 Since you are using a precompiled ROS version, we have to tell it where to find the OpenCV libraries.
 You have to extend the ``PATH`` variable to ``C:\opencv\x64\vc16\bin``.
@@ -105,58 +105,59 @@ You will need to append the CMake bin folder ``C:\Program Files\CMake\bin`` to y
 Please download these packages from `this <https://github.com/ros2/choco-packages/releases/latest>`__ GitHub repository.
 
 * asio.1.12.1.nupkg
-* bullet.2.89.0.nupkg
+* bullet.3.17.nupkg
 * cunit.2.1.3.nupkg
-* eigen-3.3.4.nupkg
-* tinyxml-usestl.2.6.2.nupkg
+* eigen.3.3.4.nupkg
 * tinyxml2.6.0.0.nupkg
 
 Once these packages are downloaded, open an administrative shell and execute the following command:
 
 .. code-block:: bash
 
-   choco install -y -s <PATH\TO\DOWNLOADS\> asio cunit eigen tinyxml-usestl tinyxml2 bullet
+   choco install -y -s <PATH\TO\DOWNLOADS\> asio cunit eigen tinyxml2 bullet
 
 Please replace ``<PATH\TO\DOWNLOADS>`` with the folder you downloaded the packages to.
 
-You must also install some additional python dependencies:
+First upgrade pip and setuptools:
 
 .. code-block:: bash
 
-   python -m pip install -U catkin_pkg cryptography empy ifcfg importlib-metadata lark-parser lxml matplotlib netifaces numpy opencv-python PyQt5 pip pillow psutil pycairo pydot pyparsing pyyaml rosdistro setuptools
+   python -m pip install -U pip setuptools==59.6.0
 
+Now install some additional python dependencies:
+
+.. code-block:: bash
+
+   python -m pip install -U catkin_pkg cryptography empy fastjsonschema==2.19.0 importlib-metadata jsonschema lark==1.1.1 lxml matplotlib netifaces numpy opencv-python PyQt5 pillow psutil pycairo pydot pyparsing==2.4.7 pytest pyyaml rosdistro
+
+Install miscellaneous prerequisites
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Next install xmllint:
+
+* Download the `64 bit binary archives <https://www.zlatkovic.com/pub/libxml/64bit/>`__ of ``libxml2`` (and its dependencies ``iconv`` and ``zlib``) from https://www.zlatkovic.com/projects/libxml/
+* Unpack all archives into e.g. ``C:\xmllint``
+* Add ``C:\xmllint\bin`` to the ``PATH``.
 
 Install Qt5
 ^^^^^^^^^^^
 
-This section is only required if you are building rviz, but it comes with our default set of sources, so if you don't know, then assume you are building it.
+Download the `5.12.X offline installer <https://www.qt.io/offline-installers>`_ from Qt's website.
+Run the installer.
+Make sure to select the ``MSVC 2017 64-bit`` component under the ``Qt`` -> ``Qt 5.12.12`` tree.
 
-First get the installer from Qt's website:
-
-https://www.qt.io/download
-
-Select the Open Source version and then the ``Qt Online Installer for Windows``.
-
-Run the installer and install Qt5.
-
-We recommend you install it to the default location of ``C:\Qt``, but if you choose somewhere else, make sure to update the paths below accordingly.
-When selecting components to install, the only thing you absolutely need is the appropriate MSVC 64-bit component under the ``Qt`` -> ``Qt 5.15.0`` tree.
-We're using ``5.15.0`` as of the writing of this document and that's what we recommend since that's all we test on Windows, but later Qt5 versions will probably work too.
-Be sure to select ``MSVC 2019 64-bit``.
-After that, the default settings are fine.
-
-Finally, set the ``Qt5_DIR`` environment variable in the ``cmd.exe`` where you intend to build so that CMake can find it:
+Finally, in an administrator ``cmd.exe`` window set these environment variables.
+The commands below assume you installed it to the default location of ``C:\Qt``.
 
 .. code-block:: bash
 
-   set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-   set QT_QPA_PLATFORM_PLUGIN_PATH=C:\Qt\5.15.0\msvc2019_64\plugins\platforms
+   setx /m Qt5_DIR C:\Qt\Qt5.12.12\5.12.12\msvc2017_64
+   setx /m QT_QPA_PLATFORM_PLUGIN_PATH C:\Qt\Qt5.12.12\5.12.12\msvc2017_64\plugins\platforms
 
-You could set it permanently with ``setx -m Qt5_DIR C:\Qt\5.15.0\msvc2019_64`` and ``setx -m QT_QPA_PLATFORM_PLUGIN_PATH C:\Qt\5.15.0\msvc2019_64\plugins\platforms`` instead, but that requires Administrator.
 
 .. note::
 
-   This path might change based on which MSVC version you're using or if you installed it to a different directory.
+   This path might change based on the installed MSVC version, the directory Qt was installed to, and the version of Qt installed.
 
 RQt dependencies
 ^^^^^^^^^^^^^^^^

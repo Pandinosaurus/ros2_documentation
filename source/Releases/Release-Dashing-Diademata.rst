@@ -1,6 +1,5 @@
-
-ROS 2 Dashing Diademata (codename 'dashing'; May 31st, 2019)
-============================================================
+Dashing Diademata (``dashing``)
+===============================
 
 .. contents:: Table of Contents
    :depth: 2
@@ -40,9 +39,9 @@ New features in this ROS 2 release
 
 A few features and improvements we would like to highlight:
 
-* `Components <https://index.ros.org/doc/ros2/Tutorials/Composition/>`__ are now the recommended way to write your node.
+* :doc:`Components <../Tutorials/Intermediate/Composition>` are now the recommended way to write your node.
   They can be used standalone as well as being composed within a process and both ways are fully support from ``launch`` files.
-* The `intra-process communication <https://github.com/ros2/ros2_documentation/edit/master/source/Tutorials/Intra-Process-Communication.rst>`__ (C++ only) has been improved - both in terms of latency as well as minimizing copies.
+* The :doc:`intra-process communication <../Tutorials/Demos/Intra-Process-Communication>` (C++ only) has been improved - both in terms of latency as well as minimizing copies.
 * The Python client library has been updated to match most of the C++ equivalent and some important bug fixes and improvements have landed related to memory usage and performance.
 * Parameters are now a complete alternative to ``dynamic_reconfigure`` from ROS 1 including constraints like ranges or being read-only.
 * By relying on (a subset of) `IDL 4.2 <https://www.omg.org/spec/IDL/4.2>`__ for the message generation pipeline it is now possible to use ``.idl`` files (beside ``.msg`` / ``.srv`` / ``.action`` files).
@@ -500,7 +499,7 @@ If not present, registration macros must be added to the project's CMake.
   add_library(listener src/listener.cpp)
   rclcpp_components_register_nodes(listener "composition::Listener")
 
-For more information on composition, see `the tutorial <https://index.ros.org/doc/ros2/Tutorials/Composition/>`__
+For more information on composition, see `the tutorial <../Tutorials/Intermediate/Writing-a-Composable-Node>`
 
 rclpy
 ^^^^^
@@ -698,7 +697,7 @@ launch
 The ``launch_testing`` package caught up with the ``launch`` package redesign done in Bouncy Bolson.
 The legacy Python API, already moved into the ``launch.legacy`` submodule, has thus been deprecated and removed.
 
-See ``launch`` `examples <https://github.com/ros2/launch/tree/master/launch/examples>`__ and `documentation <https://github.com/ros2/launch/tree/master/launch/doc>`__ for reference on how to use its new API.
+See ``launch`` `examples <https://github.com/ros2/launch/tree/dashing/launch/examples>`__ and `documentation <https://github.com/ros2/launch/tree/dashing/launch/doc>`__ for reference on how to use its new API.
 
 See `demos tests <https://github.com/ros2/demos>`__ for reference on how to use the new ``launch_testing`` API.
 
@@ -773,7 +772,7 @@ Known Issues
 
 * `[ros2/rclcpp#715] <https://github.com/ros2/rclcpp/issues/715>`_ There is an inconsistency in the way that parameter YAML files are loaded between standalone ROS 2 nodes and composed ROS 2 nodes.
   Currently available workarounds are noted in an `issue comment <https://github.com/ros2/rclcpp/issues/715#issuecomment-497392626>`_
-* `[ros2/rclpy#360] <https://github.com/ros2/rclpy/issues/360>`_ rclpy nodes ignore ``ctrl-c`` when using OpenSplice on Windows.
+* `[ros2/rclpy#360] <https://github.com/ros2/rclpy/issues/360>`_ rclpy nodes ignore :kbd:`ctrl-c` when using OpenSplice on Windows.
 * `[ros2/rosidl_typesupport_opensplice#30] <https://github.com/ros2/rosidl_typesupport_opensplice/issues/30>`_ There is a bug preventing nesting a message inside of a service or action definition with the same name when using OpenSplice.
 * `[ros2/rclcpp#781] <https://github.com/ros2/rclcpp/pull/781>`_ Calling ``get_parameter``/``list_parameter`` from within ``on_set_parameter_callback`` causes a deadlock on Dashing.  This is fixed for Eloquent, but is an ABI break so has not been backported to Dashing.
 * `[ros2/rclcpp#912] <https://github.com/ros2/rclcpp/issues/912>`_ Inter-process communication forces a message copy when intra-process communication takes place between an ``std::unique_ptr`` publisher and a single ``std::unique_ptr`` subscription (published ``std::unique_ptr`` is internally being promoted to an ``std::shared_ptr``).

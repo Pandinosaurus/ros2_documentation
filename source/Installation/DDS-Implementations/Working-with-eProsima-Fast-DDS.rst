@@ -1,5 +1,5 @@
-Working with eProsima Fast DDS
-==============================
+eProsima Fast DDS
+=================
 
 eProsima Fast DDS is a complete open-source DDS implementation for real time embedded architectures and operating systems.
 See also: https://www.eprosima.com/index.php/products-all/eprosima-fast-dds
@@ -8,7 +8,7 @@ See also: https://www.eprosima.com/index.php/products-all/eprosima-fast-dds
 Prerequisites
 -------------
 
-Have `rosdep installed  <https://wiki.ros.org/rosdep#Installing_rosdep>`__
+Have :doc:`rosdep installed <../../Tutorials/Intermediate/Rosdep>`.
 
 Install packages
 ----------------
@@ -17,7 +17,7 @@ The easiest way is to install from ROS 2 apt repository.
 
 .. code-block:: bash
 
-   sudo apt install ros-galactic-rmw-fastrtps-cpp
+   sudo apt install ros-{DISTRO}-rmw-fastrtps-cpp
 
 Build from source code
 ----------------------
@@ -29,7 +29,7 @@ First, clone Fast DDS and rmw_fastrtps in the ROS 2 workspace source directory.
 .. code-block:: bash
 
    cd ros2_ws/src
-   git clone https://github.com/ros2/rmw_fastrtps ros2/rmw_fastrtps
+   git clone https://github.com/ros2/rmw_fastrtps ros2/rmw_fastrtps -b {REPOS_FILE_BRANCH}
    git clone https://github.com/eProsima/Fast-DDS eProsima/fastrtps
 
 Then, install necessary packages for Fast DDS.

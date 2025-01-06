@@ -38,15 +38,15 @@ A synchronous client will block the calling thread when sending a request to a s
 The call can take arbitrary amounts of time to complete.
 Once complete, the response returns directly to the client.
 
-The following is an example of how to correctly execute a synchronous service call from a client node, similar to the async node in the :doc:`Simple Service and Client <../Tutorials/Writing-A-Simple-Py-Service-And-Client>` tutorial.
+The following is an example of how to correctly execute a synchronous service call from a client node, similar to the async node in the :doc:`Simple Service and Client <../Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Service-And-Client>` tutorial.
 
 .. code-block:: python
 
-  import sys
   from threading import Thread
 
   from example_interfaces.srv import AddTwoInts
   import rclpy
+  from rclpy.executors import ExternalShutdownException
   from rclpy.node import Node
 
   class MinimalClientSync(Node):
@@ -59,27 +59,26 @@ The following is an example of how to correctly execute a synchronous service ca
           self.req = AddTwoInts.Request()
 
       def send_request(self):
-          self.req.a = int(sys.argv[1])
-          self.req.b = int(sys.argv[2])
+          self.req.a = 41
+          self.req.b = 1
           return self.cli.call(self.req)
           # This only works because rclpy.spin() is called in a separate thread below.
           # Another configuration, like spinning later in main() or calling this method from a timer callback, would result in a deadlock.
 
   def main():
-      rclpy.init()
+      try:
+          with rclpy.init():
+              minimal_client = MinimalClientSync()
 
-      minimal_client = MinimalClientSync()
+              spin_thread = Thread(target=rclpy.spin, args=(minimal_client,))
+              spin_thread.start()
 
-      spin_thread = Thread(target=rclpy.spin, args=(minimal_client,))
-      spin_thread.start()
-
-      response = minimal_client.send_request()
-      minimal_client.get_logger().info(
-          'Result of add_two_ints: for %d + %d = %d' %
-          (minimal_client.req.a, minimal_client.req.b, response.sum))
-
-      minimal_client.destroy_node()
-      rclpy.shutdown()
+              response = minimal_client.send_request()
+              minimal_client.get_logger().info(
+                  'Result of add_two_ints: for %d + %d = %d' %
+                  (minimal_client.req.a, minimal_client.req.b, response.sum))
+      except (KeyboardInterrupt, ExternalShutdownException):
+          pass
 
 
   if __name__ == '__main__':
@@ -136,9 +135,9 @@ Since sending a request doesn’t block anything, a loop can be used to both spi
         if future.done():
             #Get response
 
-The :doc:`Simple Service and Client <../Tutorials/Writing-A-Simple-Py-Service-And-Client>` tutorial for Python illustrates how to perform an async service call and retrieve the ``future`` using a loop.
+The :doc:`Simple Service and Client <../Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Service-And-Client>` tutorial for Python illustrates how to perform an async service call and retrieve the ``future`` using a loop.
 
-The ``future`` can also be retrieved using a timer or callback, like in `this example <https://github.com/ros2/examples/blob/master/rclpy/services/minimal_client/examples_rclpy_minimal_client/client_async_callback.py>`_, a dedicated thread, or by another method.
+The ``future`` can also be retrieved using a timer or callback, like in `this example <https://github.com/ros2/examples/blob/{REPOS_FILE_BRANCH}/rclpy/services/minimal_client/examples_rclpy_minimal_client/client_async_callback.py>`_, a dedicated thread, or by another method.
 It is up to you, as the caller, to decide how to store ``future``, check on its status, and retrieve your response.
 
 Summary

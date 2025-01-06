@@ -1,5 +1,5 @@
-Installing ROS 2 on Windows
-===========================
+Windows (binary)
+================
 
 .. contents:: Table of Contents
    :depth: 2
@@ -22,8 +22,8 @@ Only Windows 10 is supported.
 
 .. include:: _Windows-Install-Prerequisites.rst
 
-Downloading ROS 2
------------------
+Install ROS 2
+-------------
 
 Binary releases of {DISTRO_TITLE_FULL} are not provided.
 Instead you may download nightly :ref:`prerelease binaries <Prerelease_binaries>`.
@@ -32,15 +32,23 @@ Instead you may download nightly :ref:`prerelease binaries <Prerelease_binaries>
 
 .. note::
 
-    There may be more than one binary download option which might cause the file name to differ.
+   There may be more than one binary download option which might cause the file name to differ.
 
 .. note::
 
-    To download the ROS 2 debug libraries you'll need to download ``ros2-package-windows-debug-AMD64.zip``
+   To install debug libraries for ROS 2, see `Extra Stuff for Debug`_.
+   Then continue on with downloading ``ros2-package-windows-debug-AMD64.zip``.
 
 * Unpack the zip file somewhere (we'll assume ``C:\dev\ros2_{DISTRO}``\ ).
 
-Environment setup
+Install additional RMW implementations (optional)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The default middleware that ROS 2 uses is ``Fast DDS``, but the middleware (RMW) can be replaced at runtime.
+See the :doc:`guide <../How-To-Guides/Working-with-multiple-RMW-implementations>` on how to work with multiple RMWs.
+
+
+Setup environment
 -----------------
 
 Start a command shell and source the ROS 2 setup file to set up the workspace:
@@ -71,21 +79,13 @@ This verifies both the C++ and Python APIs are working properly.
 Hooray!
 
 
-Next steps after installing
----------------------------
-Continue with the :doc:`tutorials and demos <../Tutorials>` to configure your environment, create your own workspace and packages, and learn ROS 2 core concepts.
+Next steps
+----------
 
-Using the ROS 1 bridge
-----------------------
-The ROS 1 bridge can connect topics from ROS 1 to ROS 2 and vice-versa. See the dedicated `documentation <https://github.com/ros2/ros1_bridge/blob/master/README.md>`__ on how to build and use the ROS 1 bridge.
+Continue with the :doc:`tutorials and demos <../../Tutorials>` to configure your environment, create your own workspace and packages, and learn ROS 2 core concepts.
 
-Additional RMW implementations (optional)
------------------------------------------
-The default middleware that ROS 2 uses is ``Cyclone DDS``, but the middleware (RMW) can be replaced at runtime.
-See the :doc:`guide <../How-To-Guides/Working-with-multiple-RMW-implementations>` on how to work with multiple RMWs.
-
-Troubleshooting
----------------
+Troubleshoot
+------------
 
 Troubleshooting techniques can be found :ref:`here <windows-troubleshooting>`.
 
@@ -100,3 +100,31 @@ Uninstall
    .. code-block:: bash
 
       rmdir /s /q \ros2_{DISTRO}
+
+Extra Stuff for Debug
+---------------------
+
+To download the ROS 2 debug libraries you'll need to download ``ros2-{DISTRO}-*-windows-debug-AMD64.zip``.
+Please note that debug libraries require some more additional configuration/setup to work as given below.
+
+Python installation may require modification to enable debugging symbols and debug binaries:
+
+* Search in windows **Search Bar** and open **Apps and Features**.
+* Search for the installed Python version.
+
+* Click Modify.
+
+      .. image:: images/python_installation_modify.png
+         :width: 500 px
+
+* Click Next to go to **Advanced Options**.
+
+      .. image:: images/python_installation_next.png
+         :width: 500 px
+
+* Make sure **Download debugging symbols** and **Download debug binaries** are checked.
+
+      .. image:: images/python_installation_enable_debug.png
+         :width: 500 px
+
+* Click Install.

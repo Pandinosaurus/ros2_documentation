@@ -2,12 +2,12 @@ pull_request_rules:
   - name: automatic backport of common pages
     conditions:
       - base=rolling
-      - "files~=Governance|Contact|index|Marketing|ROSCon-Content|Roadmap|Releases|Feature-Ideas"
+      - "files~=Governance|Contact|index|Marketing|ROSCon-Content|Roadmap|Releases|Feature-Ideas|Metrics"
     actions:
       backport:
         branches:
-          - galactic
-          - foxy
+          - jazzy
+          - humble
 
   - name: backport at reviewers discretion
     conditions:
@@ -16,23 +16,23 @@ pull_request_rules:
     actions:
       backport:
         branches:
-          - galactic
-          - foxy
+          - jazzy
+          - humble
 
-  - name: backport to galactic at reviewers discretion
+  - name: backport to jazzy at reviewers discretion
     conditions:
       - base=rolling
-      - "label=backport-galactic"
+      - "label=backport-jazzy"
     actions:
       backport:
         branches:
-          - galactic
+          - jazzy
 
-  - name: backport to foxy at reviewers discretion
+  - name: backport to humble at reviewers discretion
     conditions:
       - base=rolling
-      - "label=backport-foxy"
+      - "label=backport-humble"
     actions:
       backport:
         branches:
-          - foxy
+          - humble

@@ -10,17 +10,10 @@ Options for installing ROS 2 {DISTRO_TITLE_FULL}:
    :hidden:
    :glob:
 
-   Installation/Ubuntu-Development-Setup
-   Installation/Ubuntu-Install-Binary
-   Installation/Ubuntu-Install-Debians
-   Installation/macOS-Development-Setup
-   Installation/Windows-Development-Setup
+   Installation/Ubuntu-Install-Debs
    Installation/Windows-Install-Binary
-   Installation/RHEL-Development-Setup
-   Installation/RHEL-Install-Binary
    Installation/RHEL-Install-RPMs
-   Installation/Fedora-Development-Setup
-   Installation/Latest-Development-Setup
+   Installation/Alternatives
    Installation/Maintaining-a-Source-Checkout
    Installation/Testing
    Installation/DDS-Implementations
@@ -28,22 +21,25 @@ Options for installing ROS 2 {DISTRO_TITLE_FULL}:
 Binary packages
 ---------------
 
-We currently provide ROS 2 binary packages for the following platforms:
+Binaries are only created for the Tier 1 operating systems listed in `REP-2000 <https://www.ros.org/reps/rep-2000.html#rolling-ridley-june-2020-ongoing>`__.
+Given the nature of Rolling, this list may be updated at any time.
+If you are not running any of the following operating systems you may need to build from source or use a :doc:`container solution <How-To-Guides/Run-2-nodes-in-single-or-separate-docker-containers>` to run ROS 2 on your platform.
 
-* Ubuntu Linux - Focal Fossa (20.04)
+We provide ROS 2 binary packages for the following platforms:
 
-  * :doc:`Debian packages <Installation/Ubuntu-Install-Debians>`
-  * :doc:`"fat" archive <Installation/Ubuntu-Install-Binary>`
+* Ubuntu Linux - Noble Numbat (24.04)
 
-* RHEL 8
+  * :doc:`deb packages <Installation/Ubuntu-Install-Debs>` (recommended)
+  * :doc:`binary archive <Installation/Alternatives/Ubuntu-Install-Binary>`
 
-  * :doc:`RPM packages <Installation/RHEL-Install-RPMs>`
-  * :doc:`"fat" archive <Installation/RHEL-Install-Binary>`
+* RHEL 9
 
-* :doc:`Windows <Installation/Windows-Install-Binary>`
+  * :doc:`RPM packages <Installation/RHEL-Install-RPMs>` (recommended)
+  * :doc:`binary archive <Installation/Alternatives/RHEL-Install-Binary>`
 
-As defined in `REP 2000 <https://www.ros.org/reps/rep-2000.html>`_
+* Windows 10
 
+  * :doc:`Windows Binary (VS 2019) <Installation/Windows-Install-Binary>`
 
 .. _building-from-source:
 
@@ -52,12 +48,10 @@ Building from source
 
 We support building ROS 2 from source on the following platforms:
 
-
-* :doc:`Ubuntu Linux <Installation/Ubuntu-Development-Setup>`
-* :doc:`macOS <Installation/macOS-Development-Setup>`
-* :doc:`RHEL <Installation/RHEL-Development-Setup>`
-* :doc:`Windows <Installation/Windows-Development-Setup>`
-
+* :doc:`Ubuntu Linux 24.04 <Installation/Alternatives/Ubuntu-Development-Setup>`
+* :doc:`Windows 10 <Installation/Alternatives/Windows-Development-Setup>`
+* :doc:`RHEL-9/Fedora <Installation/Alternatives/RHEL-Development-Setup>`
+* :doc:`macOS <Installation/Alternatives/macOS-Development-Setup>`
 
 Which install should you choose?
 --------------------------------
@@ -70,18 +64,15 @@ This is great for people who want to dive in and start using ROS 2 as-is, right 
 
 Linux users have two options for installing binary packages:
 
-- Debian packages
-- "fat" archive
+- Packages (debs or RPMS, depending on the platform)
+- binary archive
 
-Installing from Debian packages is the recommended method.
-It's more convenient because it installs its necessary dependencies automatically.
-It also updates alongside regular system updates.
+Installing from packages is the recommended method, as it installs necessary dependencies automatically and also updates alongside regular system updates.
+However, you need root access in order to install deb packages.
+If you don't have root access, the binary archive is the next best choice.
 
-However, you need root access in order to install Debian packages.
-If you don't have root access, the "fat" archive is the next best choice.
-
-macOS and Windows users who choose to install from binary packages only have the "fat" archive option
-(Debian packages are exclusive to Ubuntu/Debian).
+Windows users who choose to install from binary packages only have the binary archive option
+(deb packages are exclusive to Ubuntu/Debian).
 
 **Building from source** is meant for developers looking to alter or explicitly omit parts of ROS 2's base.
 It is also recommended for platforms that don't support binaries.
@@ -89,4 +80,5 @@ Building from source also gives you the option to install the absolute latest ve
 
 Contributing to ROS 2 core?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you plan to contribute directly to ROS 2 core packages, you can install the :doc:`latest development from source <Installation/Latest-Development-Setup>` which shares installation instructions with the :ref:`Rolling distribution <rolling_distribution>`.
+
+If you plan to contribute directly to ROS 2 core packages, you can install the :doc:`latest development from source <Installation/Alternatives/Latest-Development-Setup>` which shares installation instructions with the :ref:`Rolling distribution <rolling_distribution>`.

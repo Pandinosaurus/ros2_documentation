@@ -49,7 +49,7 @@ The namespace, which must start with a forward slash, is set to ``/demo``, which
 Passing remapping arguments to specific nodes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If multiple nodes are being run within a single process (e.g. using :doc:`Composition <../Concepts/About-Composition>`), remapping arguments can be passed to a specific node using its name as a prefix.
+If multiple nodes are being run within a single process (e.g. using :doc:`Composition <../Concepts/Intermediate/About-Composition>`), remapping arguments can be passed to a specific node using its name as a prefix.
 For example, the following will pass the remapping arguments to the specified nodes:
 
 .. code-block:: bash
@@ -67,7 +67,9 @@ The following example will both change the node name and remap a topic (node and
 Logger configuration
 --------------------
 
-See ``--log-level`` argument usage in :doc:`the logging page <../Tutorials/Logging-and-logger-configuration>`.
+The per-node logging level can be specified using the ``--log-level`` command line argument.
+The executable log file name prefix, which includes all nodes in the executable, can be specified using ``--log-file-name`` command line argument.
+For more information please see :doc:`the logging page <../Tutorials/Demos/Logging-and-logger-configuration>`.
 
 Parameters
 ----------
@@ -109,7 +111,7 @@ Setting parameters from YAML files
 
 Parameters can be set from the command-line in the form of yaml files.
 
-`See here <https://github.com/ros2/rcl/tree/master/rcl_yaml_param_parser>`__ for examples of the yaml file syntax.
+`See here <https://github.com/ros2/rcl/tree/{REPOS_FILE_BRANCH}/rcl_yaml_param_parser>`__ for examples of the yaml file syntax.
 
 As an example, save the following as ``demo_params.yaml``:
 
@@ -123,7 +125,7 @@ As an example, save the following as ``demo_params.yaml``:
               some_integers: [1, 2, 3, 4]
               some_doubles : [3.14, 2.718]
 
-Then either declare the parameters within your node with ``declare_parameter``  or ``declare_parameters`` (see `documentation <https://docs.ros2.org/foxy/api/rclcpp/classrclcpp_1_1Node.html#a222633623e5c933b7953e5718ec3649a>`__ for function signatures), or `set the node to automatically declare parameters <https://docs.ros2.org/foxy/api/rclcpp/classrclcpp_1_1NodeOptions.html#a094ceb7af7c9b358ec007a4b8e14d40d>`__ if they were passed in via a command line override.
+Then either declare the parameters within your node with `declare_parameter <http://docs.ros.org/en/{DISTRO}/p/rclcpp/generated/classrclcpp_1_1Node.html#_CPPv4N6rclcpp4Node17declare_parameterERKNSt6stringERKN6rclcpp14ParameterValueERKN14rcl_interfaces3msg19ParameterDescriptorEb>`__  or `declare_parameters <http://docs.ros.org/en/{DISTRO}/p/rclcpp/generated/classrclcpp_1_1Node.html#_CPPv4I0EN6rclcpp4Node18declare_parametersENSt6vectorI10ParameterTEERKNSt6stringERKNSt3mapINSt6stringENSt4pairI10ParameterTN14rcl_interfaces3msg19ParameterDescriptorEEEEEb>`__, or `set the node to automatically declare parameters <http://docs.ros.org/en/{DISTRO}/p/rclcpp/generated/classrclcpp_1_1NodeOptions.html#_CPPv4NK6rclcpp11NodeOptions47automatically_declare_parameters_from_overridesEv>`__ if they were passed in via a command line override.
 
 Then run the following:
 

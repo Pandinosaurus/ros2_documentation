@@ -30,7 +30,7 @@ All ROS 2 packages begin by running the command
 
 .. code-block:: bash
 
-   ros2 pkg create <pkg-name> --dependencies [deps]
+   ros2 pkg create --license Apache-2.0 <pkg-name> --dependencies [deps]
 
 in your workspace (usually ``~/ros2_ws/src``).
 
@@ -42,13 +42,13 @@ To create a package for a specific client library:
 
     .. code-block:: bash
 
-       ros2 pkg create <pkg-name> --dependencies [deps] --build-type ament_cmake
+       ros2 pkg create  --build-type ament_cmake --license Apache-2.0 <pkg-name> --dependencies [deps]
 
   .. group-tab:: Python
 
     .. code-block:: bash
 
-       ros2 pkg create <pkg-name> --dependencies [deps] --build-type ament_python
+       ros2 pkg create  --build-type ament_python --license Apache-2.0 <pkg-name> --dependencies [deps]
 
 You can then update the ``package.xml`` with your package info such as dependencies, descriptions, and authorship.
 
@@ -103,7 +103,7 @@ and a ``setup.py`` file that looks like:
 
    import os
    from glob import glob
-   from setuptools import setup
+   from setuptools import find_packages, setup
 
    package_name = 'my_package'
 
@@ -111,7 +111,7 @@ and a ``setup.py`` file that looks like:
        name=package_name,
        version='0.0.0',
        # Packages to export
-       packages=[package_name],
+       packages=find_packages(exclude=['test']),
        # Files we want to install, specifically launch files
        data_files=[
            # Install marker file in the package index
@@ -119,7 +119,7 @@ and a ``setup.py`` file that looks like:
            # Include our package.xml file
            (os.path.join('share', package_name), ['package.xml']),
            # Include all launch files.
-           (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*.launch.py'))),
+           (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
        ],
        # This is important as well
        install_requires=['setuptools'],
@@ -145,3 +145,10 @@ and a ``setup.py`` file that looks like:
            ],
        },
    )
+
+
+Combined C++ and Python Packages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When writing a package with both C++ and Python code, the ``setup.py`` file and ``setup.cfg`` file are not used.
+Instead, use :doc:`ament_cmake_python <./Ament-CMake-Python-Documentation>`.

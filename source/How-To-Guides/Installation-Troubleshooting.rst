@@ -90,8 +90,6 @@ Multiple host interference
 If you're running multiple instances on the same network you may get interference.
 To avoid this you can set the environment variable ``ROS_DOMAIN_ID`` to a different integer, the default is zero.
 This will define the DDS domain id for your system.
-Note that if you are using the OpenSplice DDS implementation you will also need to update the OpenSplice configuration file accordingly.
-The location of the configuration file is referenced in the ``OSPL_URI`` environment variable.
 
 Exception sourcing setup.bash
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -104,6 +102,37 @@ If you encounter exceptions when trying to source the environment after building
 
    colcon version-check  # check if newer versions available
    sudo apt install python3-colcon* --only-upgrade  # upgrade installed colcon packages to latest version
+
+Anaconda Python Conflict
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+``conda`` does not work in conjunction with ROS 2.
+Make sure that your ``PATH`` environment variable does not have any conda paths in it.
+You may have to check your ``.bashrc`` for this line and comment it out.
+
+Cannot start rviz2
+^^^^^^^^^^^^^^^^^^
+
+``rviz2`` may fail to start on a Wayland display system with errors like:
+
+.. code-block::
+
+   QSocketNotifier: Can only be used with threads started with QThread
+   [INFO] [1714730141.758659580] [rviz2]: Stereo is NOT SUPPORTED
+   [INFO] [1714730141.758813709] [rviz2]: OpenGl version: 3.1 (GLSL 1.4)
+   [ERROR] [1714730141.797879232] [rviz2]: rviz::RenderSystem: error creating render window: RenderingAPIException: Invalid parentWindowHandle (wrong server or screen) in GLXWindow::create at ./.obj-aarch64-linux-gnu/ogre_vendor-prefix/src/ogre_vendor/RenderSystems/GLSupport/src/GLX/OgreGLXWindow.cpp (line 246)
+   ...
+   [ERROR] [1714730141.808124283] [rviz2]: Unable to create the rendering window after 100 tries
+   terminate called after throwing an instance of 'std::runtime_error'
+     what():  Unable to create the rendering window after 100 tries
+   Aborted (core dumped)
+
+This is due to an incompatibility between Wayland and RViz2.
+You may be able to workaround this problem by running RViz2 in X11 compatibility mode:
+
+.. code-block::
+
+   QT_QPA_PLATFORM=xcb rviz2
 
 .. _macOS-troubleshooting:
 
@@ -211,28 +240,9 @@ To resolve this error, you will need to:
 
    $ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-qt_gui_cpp error: SIP binding generator NOT available
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. only relevant to Eloquent and Foxy
-
-When building qt_gui_cpp there may be errors look like the following:
-
-.. code-block:: bash
-
-   --- stderr: qt_gui_cpp
-
-   CMake Error at src/CMakeLists.txt:10 (message):
-     No Python binding generator found.
-
-   ---
-   Failed   <<< qt_gui_cpp [ Exited with code 1 ]
-
-To fix this issue, follow :doc:`these steps <RQt-Source-Install-MacOS>` to install dependencies for RQt.
-
 rosdep install error ``homebrew: Failed to detect successful installation of [qt5]``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-While following the :doc:`Creating a workspace <../Tutorials/Workspace/Creating-A-Workspace>` tutorial, you might encounter the following error stating that ``rosdep`` failes to install Qt5.
+While following the :doc:`Creating a workspace <../Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace>` tutorial, you might encounter the following error stating that ``rosdep`` failes to install Qt5.
 
 .. code-block:: bash
 
@@ -324,8 +334,41 @@ Fast RTPS requires ``msvcr20.dll``, which is part of the ``Visual C++ Redistribu
 Although it is usually installed by default in Windows 10, we know that some Windows 10-like versions don't have it installed by default (e.g.: Windows Server 2019).
 In case you don't have it installed, you can download it from `here <https://www.microsoft.com/en-us/download/details.aspx?id=40784>`_.
 
+Failed to create process
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+If running a ROS binary gives the error:
+
+.. code-block::
+
+   | failed to create process.
+
+It is likely the Python interpreter was not found.
+For each executable, the shebang (first line) of the accompanying script is used, so make sure Python is available under the expected path (default: ``C:\Python38\``).
+
 Binary installation specific
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * If your example does not start because of missing DLLs, please verify that all libraries from external dependencies such as OpenCV are located inside your ``PATH`` variable.
 * If you forget to call the ``local_setup.bat`` file from your terminal, the demo programs will most likely crash immediately.
+
+Running RViz with WSL2
+^^^^^^^^^^^^^^^^^^^^^^
+
+If you are using `WSL2 <https://learn.microsoft.com/en-us/windows/wsl/install>`__ to run ROS 2 on Windows, you may run into an issue running RViz that looks like:
+
+.. code-block:: console
+
+   $ rviz2
+   [INFO] [1695823660.091830699] [rviz2]: Stereo is NOT SUPPORTED
+   [INFO] [1695823660.091943524] [rviz2]: OpenGl version: 4.1 (GLSL 4.1)
+   D3D12: Removing Device.
+   Segmentation fault
+
+One possible solution to this is to force RViz to use software rendering:
+
+.. code-block:: console
+
+   $ export LIBGL_ALWAYS_SOFTWARE=true
+   $ rviz2
+   [INFO] [1695823660.091830699] [rviz2]: Stereo is NOT SUPPORTED

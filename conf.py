@@ -25,6 +25,7 @@ import time
 from docutils.parsers.rst import Directive
 
 sys.path.append(os.path.abspath('./sphinx-multiversion'))
+sys.path.append(os.path.abspath('plugins'))
 
 
 # The suffix(es) of source filenames.
@@ -61,7 +62,7 @@ default_role = 'any'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -73,7 +74,17 @@ pygments_style = 'sphinx'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-extensions = ['sphinx.ext.intersphinx', 'sphinx_tabs.tabs', 'sphinx_multiversion', 'sphinx_rtd_theme', 'sphinx.ext.ifconfig', 'sphinx_copybutton', 'sphinx.ext.graphviz']
+extensions = [
+    'sphinx.ext.graphviz',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.intersphinx',
+    'sphinx_copybutton',
+    'sphinx_multiversion',
+    'sphinx_tabs.tabs',
+    'sphinx_rtd_theme',
+    'sphinx_sitemap_ros',
+    'sphinxcontrib.mermaid',
+]
 
 # Intersphinx mapping
 
@@ -94,6 +105,7 @@ intersphinx_mapping = {
 #
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
+    'analytics_id': 'G-EVD5Z6G6NH',
     'collapse_navigation': False,
     'sticky_navigation': True,
     'navigation_depth': -1,
@@ -112,13 +124,13 @@ templates_path = [
 
 # smv_tag_whitelist = None
 
-smv_branch_whitelist = r'^(rolling|galactic|foxy|eloquent|dashing|crystal)$'
+smv_branch_whitelist = r'^(rolling|jazzy|iron|humble|galactic|foxy|eloquent|dashing|crystal)$'
 
 
-smv_released_pattern = r'^refs/(heads|remotes/[^/]+)/(galactic|foxy|eloquent|dashing|crystal).*$'
+smv_released_pattern = r'^refs/(heads|remotes/[^/]+)/(jazzy|iron|humble|galactic|foxy|eloquent|dashing|crystal).*$'
 smv_remote_whitelist = r'^(origin)$'
-smv_latest_version = 'galactic'
-smv_eol_versions = ['crystal', 'dashing', 'eloquent']
+smv_latest_version = 'jazzy'
+smv_eol_versions = ['crystal', 'dashing', 'eloquent', 'foxy', 'galactic', 'iron']
 
 distro_full_names = {
     'crystal': 'Crystal Clemmys',
@@ -126,6 +138,9 @@ distro_full_names = {
     'eloquent': 'Eloquent Elusor',
     'foxy': 'Foxy Fitzroy',
     'galactic': 'Galactic Geochelone',
+    'humble': 'Humble Hawksbill',
+    'iron': 'Iron Irwini',
+    'jazzy': 'Jazzy Jalisco',
     'rolling': 'Rolling Ridley',
 }
 
@@ -134,7 +149,7 @@ macros = {
     'DISTRO': 'rolling',
     'DISTRO_TITLE': 'Rolling',
     'DISTRO_TITLE_FULL': 'Rolling Ridley',
-    'REPOS_FILE_BRANCH': 'master',
+    'REPOS_FILE_BRANCH': 'rolling',
 }
 
 html_favicon = 'favicon.ico'
@@ -153,6 +168,13 @@ html_sourcelink_suffix = ''
 htmlhelp_basename = 'ros2_docsdoc'
 
 html_baseurl = 'https://docs.ros.org/en'
+
+# The sitemap_url_scheme is used by the sitemap generator to figure out how
+# to generate links.  Essentially, the sitemap generator uses the following:
+#
+# url = html_baseurl + '/' + sitemap_url_scheme
+
+sitemap_url_scheme = '{version}/{link}'
 
 class RedirectFrom(Directive):
 
@@ -219,6 +241,8 @@ class RedirectFrom(Directive):
                     'canonical_url': os.path.relpath(
                         canonical_url, redirect_url
                     ),
+                    # Skip entry into sitemap.xml with reason 'redirect'.
+                    'skip_sitemap': 'redirect',
                     'title': os.path.basename(redirect_url),
                     'metatags': redirect_html_fragment.format(
                         base_url=app.config.html_baseurl,
@@ -274,7 +298,7 @@ def smv_rewrite_configs(app, config):
             'DISTRO': distro,
             'DISTRO_TITLE': distro.title(),
             'DISTRO_TITLE_FULL': distro_full_names[distro],
-            'REPOS_FILE_BRANCH' : 'master' if distro == 'rolling' else distro,
+            'REPOS_FILE_BRANCH' : distro,
         }
 
 def github_link_rewrite_branch(app, pagename, templatename, context, doctree):
